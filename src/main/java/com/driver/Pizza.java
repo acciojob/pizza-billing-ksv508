@@ -5,96 +5,96 @@ public class Pizza {
     private int price;
     private Boolean isVeg;
     private String bill;
-    private int extraCheese;
-    private int extraTopping;
-    private int paperPrice;
-    private int total;
 
-    public int getPaperPrice() {
-        return paperPrice;
-    }
+    private boolean exChees = false;
+    private boolean exTopingVeg = false;
+    private boolean exTopingNonVeg = false;
+    private boolean bagData = false;
 
-    public void setPaperPrice(int paperPrice) {
-        this.paperPrice = paperPrice;
-    }
+    final int vegPizza = 300;
+    final int nonVegPizza = 400;
+    final int extraCheesePrice = 80;
+    final int exTopingsPriceVeg = 70;
+    final int exTopingsPriceNonVeg = 120;
+    final int bag = 20;
 
-    public int getTotal() {
-        return total;
-    }
+    public Pizza(Boolean isVeg) {
 
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    public int getExtraCheese() {
-        return extraCheese;
-    }
-
-    public void setExtraCheese(int extraCheese) {
-        this.extraCheese = extraCheese;
-    }
-
-    public int getExtraTopping() {
-        return extraTopping;
-    }
-
-    public void setExtraTopping(int extraTopping) {
-        this.extraTopping = extraTopping;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setBill(String bill) {
-        this.bill = bill;
-    }
-
-    public Pizza(Boolean isVeg){
         this.isVeg = isVeg;
-        setBill("");
-        setExtraCheese(0);
-        setExtraTopping(0);
-        setTotal(0);
-        setPrice(0);
+        if (isVeg) {
+            this.price = 300;
+        } else {
+            this.price = 400;
+
+        }
+
     }
 
-    public int getPrice(){
-        if(isVeg) setPrice(300);
-        else setPrice(400);
+    public int getPrice() {
+
         return this.price;
     }
 
-    public void addExtraCheese(){
-        // your code goes here
-        setExtraCheese(80);
+    public void addExtraCheese() {
+
+        if (!exChees) {
+            this.price = this.price + extraCheesePrice;
+            exChees = true;
+
+        }
+
     }
 
-    public void addExtraToppings(){
-        // your code goes here
-        if(isVeg)
-            setExtraTopping(70);
-        else
-            setExtraTopping(120);
+    public void addExtraToppings() {
+
+        if (!exTopingVeg && isVeg) {
+            this.price = this.price + exTopingsPriceVeg;
+            exTopingVeg = true;
+            exChees = true;
+
+        } else if (!exTopingNonVeg && !isVeg) {
+            this.price = this.price + exTopingsPriceNonVeg;
+            exTopingNonVeg = true;
+            exChees = true;
+
+        }
+
     }
 
-    public void addTakeaway(){
-        // your code goes here
-        setPaperPrice(20);
+    public void addTakeaway() {
+
+        if (!bagData) {
+            bagData = true;
+            this.price = this.price + bag;
+        }
     }
 
-    public String getBill(){
-        // your code goes here
-        total = getPrice() + getExtraCheese() + getExtraTopping() + getPaperPrice();
-        boolean extraCheese = false, extraTopping = false, paperPrice = false;
-        if(getExtraCheese() != 0) extraCheese = true;
-        if(getExtraTopping() != 0) extraTopping = true;
-        if(getPaperPrice()!= 0) paperPrice = true;
-        bill += "Base Price Of The Pizza: " + getPrice() + "\n";
-        if(extraCheese) bill += "Extra Cheese Added: " + getExtraCheese() + "\n";
-        if(extraTopping) bill += "Extra Toppings Added: " + getExtraTopping() + "\n";
-        if(paperPrice) bill += "Paperbag Added: " + getPaperPrice() + "\n";
-        bill += "Total Price: " + getTotal() + "\n";
+    public String getBill() {
+
+        if (isVeg) {
+            this.bill = "Base Price Of The Pizza: " + vegPizza + "\n";
+        } else {
+            this.bill = "Base Price Of The Pizza: " + nonVegPizza + "\n";
+
+        }
+
+        if (exChees) {
+            this.bill = this.bill + "Extra Cheese Added: " + extraCheesePrice + "\n";
+        }
+
+        if (isVeg && exTopingVeg) {
+            this.bill = this.bill + "Extra Toppings Added: " + exTopingsPriceVeg + "\n";
+        } else if (!isVeg && exTopingNonVeg) {
+            this.bill = this.bill + "Extra Toppings Added: " + exTopingsPriceNonVeg + "\n";
+
+        }
+
+        if (bagData) {
+            this.bill = this.bill + "Paperbag Added: " + bag + "\n";
+        }
+
+        this.bill = this.bill + "Total Price: " + this.price + "\n";
+
         return this.bill;
     }
 }
